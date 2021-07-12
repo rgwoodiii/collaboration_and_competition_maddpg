@@ -1,21 +1,24 @@
 # collaboration_and_competition_maddpg
 
-As part of the Deep reinforcement learning nano degree with Udacity, this is an implementation of the DQN algorithm to train an agent how to optimally maximize yellow banana collection. 
+As part of the Deep reinforcement learning nano degree with Udacity, this is an implementation of the MADDPG algorithm to train two agents to successfully hit a ping pong ball over the net and return the opposing agent's hit without letting the ball hit the ground. Contrary to typical ping pong, the goal in this case is to keep the ball in play.
 
 ## environment details
-For any reinforcement learning implementation, the agent has to interact with their environment. In this case, the environment is represented as a large square floor with blue and yellow bananas scattered throughout. 
+For any reinforcement learning implementation, the agent has to interact with their environment. In this case, the environment is represented as a as a ping pong table with each agent controlling a paddle on either side.
 
 ### rewards
-Per the agent's action, the agent is rewarded according to banana collection; -1 for a blue banana collected and +1 for a yellow banana collected.
+If the agent successfully hits the ball over the net, then it receives a reward of +0.1. In the event the agent hits the ball out of bounds or lets the ball hit the ground, then it receives a reward of -0.01.
 
 ### state space
-The state space has to total of 37 dimensions and keeps information on the velocity of the agent, as well a ray based perception of objects in front of the agent.
+The state space has to total of 8 variables that correspond to racket and ball position and velocity. Additionally movement toward or away from the net, and jumping are observed. Said observations are recieved by each agent separately.
 
-### action space
+### action space - incomplete
 Within the environment, there is a discrete action space of 4. At any point in time, the agent is able 1. move forward, 2. move right, 3. move backwards, or 4. move left.
 
 ### task success
-In order to successfully complete our episodic task, the agent is required to obtain an average score of at least 13 bananas over 100 episodes.
+In order to successfully complete this episodic task, the agents are required to obtain an average score of at least .5 over 100 consecutive episodes.
+
+#### greater detail
+At the end of each episode, each agent's rewards are added up to get two different scores. For each episode we take the maximum score. We solve the environment when the 100 episode average is at least +0.5.
 
 ## Dependencies & requirements to get started
 
