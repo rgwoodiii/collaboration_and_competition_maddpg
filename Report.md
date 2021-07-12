@@ -28,13 +28,8 @@ Different from the DQN, and similar to their predecessor the DDPG, the MADDPG ar
 
 MADDPG also uses four different neural networks; rather than just an actor and a critic, this algorithm uses what is called a local actor as well as a target actor, and similarly for the agent; a local agent and a target agent.
 
-Each training step the experience (state, action, action_other_agent, reward, next state, next_state_other_agent) the two agents gained was stored.
-Then every training step the agent learned from a random sample from the stored experience. The actor tries to estimate the
-optimal policy by using the estimated state-action values from the critic while critic tries to estimate the optimal q-value function
-and learns by using a normal q-learning approach. Using this approach one gains the benefits of value based and policy based
-methods at the same time. By giving the critic access to the action of the other player the learning process gets stabilized
-without requiring to give the additional information to the actor which is the only network required for acting after the
-agent was trained successfully.
+The experience is stored at each training step. Each subsequent training step learns from a random sample of the stored experience. 
+Per actor-crotic methods, the actor attempts to identify the optimal policy by estimating the state-action function from the critic and the critic estimate the optimal q-value function.
 
 ### hyper-parameters
 The following hyperparameters were used:
