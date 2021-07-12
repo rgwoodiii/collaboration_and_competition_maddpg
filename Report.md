@@ -2,18 +2,27 @@
 
 ## implementation
 
-### environment details
-For any reinforcement learning implementation, the agent has to interact with their environment. In this case, the environment is represented as a large square floor with blue and yellow bananas scattered throughout. 
+## environment details
+For any reinforcement learning implementation, the agent has to interact with their environment. In this case, the environment is represented as a as a ping pong table with each agent controlling a paddle on either side.
 
 ### rewards
-Per the agent's action, the agent is rewarded according to banana collection; -1 for a blue banana collected and +1 for a yellow banana collected.
+If the agent successfully hits the ball over the net, then it receives a reward of +0.1. In the event the agent hits the ball out of bounds or lets the ball hit the ground, then it receives a reward of -0.01.
+
+### state space
+The state space has to total of 8 variables that correspond to racket and ball position and velocity. Said observations are recieved by each agent separately.
 
 ### action space
-Within the environment, there is a discrete action space of 4. At any point in time, the agent is able 1. move forward, 2. move right, 3. move backwards, or 4. move left.
+Within the environment, the agent has two continuous actions available. The actions are represented as movement toward or away from the net and jumping.
+
+### task success
+In order to successfully complete this episodic task, the agents are required to obtain an average score of at least .5 over 100 consecutive episodes.
+
+#### calculation explanation
+At the end of each episode, each agent's rewards are added up to get two different scores. For each episode we take the maximum score. We solve the environment when the 100 episode average is at least +0.5.
 
 ## algorithm
 
-### DQN
+### MADDPG
 To train this agent, I utilized the DQN algorithm. The agent will perform an action on the current state according to epsilon-greedy valies. The algorithm performs episodic training until the pre-specified number of episodes has been satisfied or  the agent has solved the environment. (The environment is solved when the average reward over 100 episodes reaches at least 13.) This algorithm utilizes a replay buffer.
 
 Episodes run until the maximum time steps parameter (max_t) has been reached.
