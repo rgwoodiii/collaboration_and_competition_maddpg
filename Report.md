@@ -21,17 +21,63 @@ In order to successfully complete this episodic task, the agents are required to
 At the end of each episode, each agent's rewards are added up to get two different scores. For each episode we take the maximum score. We solve the environment when the 100 episode average is at least +0.5.
 
 ## algorithm
-
 ### MADDPG
-To train this agent, I utilized the DQN algorithm. The agent will perform an action on the current state according to epsilon-greedy valies. The algorithm performs episodic training until the pre-specified number of episodes has been satisfied or  the agent has solved the environment. (The environment is solved when the average reward over 100 episodes reaches at least 13.) This algorithm utilizes a replay buffer.
+To train this agent, I utilized the MADDPG algorithm. MADDPG is an actor-critic method. Derivative of DDPG, MADDPG is known as an off-policy algorithm, but varies in its capability to solve environments with multiple agents. 
 
-Episodes run until the maximum time steps parameter (max_t) has been reached.
+Different from the DQN, and similar to their predecessor the DDPG, the MADDPG are able to solve tasks in a continuous action space.
 
-Per the udacity deep reinforcement learning course, the dqn algorithm at first was made for solving video game environments. The DQN approximates the state-value function through the use of a neural network. There are a couple of key processes that are standard for DQNs. DQNs makes use of experienced replay and fixed Q targets. 
+MADDPG also uses four different neural networks; rather than just an actor and a critic, this algorithm uses what is called a local actor as well as a target actor, and similarly for the agent; a local agent and a target agent.
 
-Experienced replay is the act of sampling 'observed experience' from our environment. After being saved in replay memory, experiences are subsequently randomly sampled from our replay memory and incorporated in our learning.
+Each training step the experience (state, action, action_other_agent, reward, next state, next_state_other_agent) the two agents gained was stored.
+Then every training step the agent learned from a random sample from the stored experience. The actor tries to estimate the
+optimal policy by using the estimated state-action values from the critic while critic tries to estimate the optimal q-value function
+and learns by using a normal q-learning approach. Using this approach one gains the benefits of value based and policy based
+methods at the same time. By giving the critic access to the action of the other player the learning process gets stabilized
+without requiring to give the additional information to the actor which is the only network required for acting after the
+agent was trained successfully.
 
-Fixed Q targets means that we optimize our network towards a static target network. 
+### hyper-parameters
+The following hyperparameters were used:
+- replay buffer size: 1e5
+- max timesteps: 10000 (all episodes get shutdown after 10000 timesteps)
+- minibatch size: 128
+- discount factor: 0.99
+- tau (soft update for target networks factor): 1e-3
+- learning rate: 1e-4 (actor) and 1e-3 (critic)
+- update interval (how often to learn): 1
+- beta start (factor for the noise added to the actions selected by the actor): 1.0
+- beta decay factor: 0.995
+- min beta: 0.01
+
+### model architecture
+#### actor
+- feed forward network
+- Batch normalization
+- Input layer: 24 (input) neurons (the state size)
+- 1st hidden layer: 128 neurons (leaky relu)
+- 2nd hidden layer: 128 neurons (leaky relu)
+- output layer: 2 neurons (1 for each action) (tanh)
+
+#### critic
+- Batch normalization
+- Input layer: 24 (input) neurons (the state size)
+- 1st hidden layer: 132 neurons (action with 2 * action_size 2 added) (leaky relu)
+- 2nd hidden layer: 128 neurons (leaky relu)
+- output layer: 1 neuron
+
+## Results
+The agent was able to solve the environment after 467 episodes achieving an average maximum score of 0.51 over the last 100 episodes
+of the training process.
+
+
+
+
+
+
+
+
+
+
 
 ### hyper-parameters
 
